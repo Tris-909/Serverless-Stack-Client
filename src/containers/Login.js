@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
+import { Auth } from "aws-amplify";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { useAppContext } from '../libs/context-libs';
 import './Login.css';
 
 export default function Login() {
+    const { setIsAuthenticated } = useAppContext();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -11,8 +15,16 @@ export default function Login() {
         return email.length > 0 && password.length > 0;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        try {
+            await Auth.signIn(email, password);
+            alert("Log In Successfully");
+            setIsAuthenticated(true);
+        } catch (error) {
+            alert(error.message);
+        }
     }
 
     return(
