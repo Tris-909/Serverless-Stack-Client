@@ -4,19 +4,22 @@ import Form from 'react-bootstrap/Form';
 import { useAppContext } from '../libs/context-libs';
 import { onError } from '../libs/error-libs';
 import { useHistory } from "react-router-dom";
+import { useFormFields } from '../libs/formValues-libs';
 import  LoaderButton from "../components/Loader/LoadButton";
 import './Login.css';
 
 export default function Login() {
     const { setIsAuthenticated } = useAppContext();
-
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [fields, setFieldValueChanges] = useFormFields({
+      email: "",
+      password: "",
+    });
+
     const validateForm = () => {
-        return email.length > 0 && password.length > 0;
+        return fields.email.length > 0 && fields.password.length > 0;
     }
 
     const handleSubmit = async (e) => {
@@ -25,7 +28,7 @@ export default function Login() {
         setIsLoading(true);
 
         try {
-            await Auth.signIn(email, password);
+            await Auth.signIn(fields.email, fields.password);
             setIsAuthenticated(true);
             history.push("/");
         } catch (error) {
@@ -41,16 +44,16 @@ export default function Login() {
           <Form.Control
             autoFocus
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={fields.email}
+            onChange={setFieldValueChanges}
           />
         </Form.Group>
         <Form.Group size="lg" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={fields.password}
+            onChange={setFieldValueChanges}
           />
         </Form.Group>
         <LoaderButton
