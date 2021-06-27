@@ -5,11 +5,13 @@ import Nav from "react-bootstrap/Nav";
 import { LinkContainer } from "react-router-bootstrap";
 import { AppContext } from './libs/context-libs';
 import { Auth } from "aws-amplify";
+import { useHistory } from "react-router-dom";
 import "./App.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     onLoad();
@@ -28,7 +30,9 @@ function App() {
     setIsLoading(false);
   }
 
-  const handlerLogOut = () => {
+  const handlerLogOut = async () => {
+    await Auth.signOut();
+    history.push("/login");
     setIsAuthenticated(false);
   }
 
