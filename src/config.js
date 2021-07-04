@@ -5,7 +5,7 @@ const config = {
     },
     apiGateway: {
       REGION: "ap-southeast-2",
-      URL: "https://krl9z0ig6c.execute-api.ap-southeast-2.amazonaws.com/prod/",
+      URL: "https://krl9z0ig6c.execute-api.ap-southeast-2.amazonaws.com/prod",
     },
     cognito: {
       REGION: "ap-southeast-2",
