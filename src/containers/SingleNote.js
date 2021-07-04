@@ -5,6 +5,7 @@ import { onError } from "../libs/error-libs";
 import config from '../config';
 import Form from "react-bootstrap/Form";
 import LoaderButton from "../components/Loader/LoadButton";
+import { uploadToS3 } from "../libs/awsLib";
 import './SingleNote.css';
 
 export default function SingleNote() {
@@ -40,6 +41,12 @@ export default function SingleNote() {
     onLoad();
   }, [id]);
   
+  function saveNote(note) {
+    return API.put("notes", `/notes/${id}`, {
+      body: note
+    });
+  }
+
   function formatFilename(str) {
     return str.replace(/^\w+-/, "");
   }
@@ -55,29 +62,47 @@ export default function SingleNote() {
   
     if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
       alert(
-        `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
-          1000000} MB.`
+        `Please pick a file smaller than ${
+          config.MAX_ATTACHMENT_SIZE / 1000000
+        } MB.`
       );
       return;
     }
   
     setIsLoading(true);
+  
+    try {
+      if (file.current) {
+        attachment = await uploadToS3(file.current);
+      }
+  
+      await saveNote({
+        content,
+        attachment: attachment || note.attachment
+      });
+      history.push("/");
+    } catch (e) {
+      onError(e);
+      setIsLoading(false);
+    }
+  }
+  
+  function deleteNote() {
+    return API.del("notes", `/notes/${id}`);
   }
   
   async function handleDelete(event) {
     event.preventDefault();
-  
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this note?"
-    );
-  
-    if (!confirmed) {
-      return;
-    }
-  
     setIsDeleting(true);
-  }
   
+    try {
+      await deleteNote();
+      history.push("/");
+    } catch (e) {
+      onError(e);
+      setIsDeleting(false);
+    }
+  }
 
   return (
     <div className="Notes">
@@ -99,7 +124,7 @@ export default function SingleNote() {
                 rel="noopener noreferrer"
                 href={note.attachmentURL}
               >
-                {formatFilename(note.attachment)}
+                {formatFilename(note.Item.attachment)}
               </a>
             </p>
           )}
