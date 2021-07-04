@@ -1,10 +1,23 @@
-@media all and (min-width: 480px) {
-    .Login {
-      padding: 60px 0;
-    }
-  
-    .Login form {
-      margin: 0 auto;
-      max-width: 320px;
-    }
-  }
+.loginPage {
+  background-color: #252526;
+  height: 100vh;
+}
+
+.Input {
+  border: 1px solid #252526 !important;
+}
+
+.FormHeader {
+  font-family: "Lobster Two", cursive !important;
+}
+
+.SignUp {
+  font-family: var(--chakra-fonts-body);
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.SubmitButton:hover {
+  background-color: #c53030 !important;
+}
