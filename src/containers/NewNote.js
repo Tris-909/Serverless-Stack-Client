@@ -3,7 +3,9 @@ import Form from "react-bootstrap/Form";
 import { useHistory } from 'react-router';
 import LoaderButton from '../components/Loader/LoadButton';
 import { onError } from '../libs/error-libs';
+import { uploadToS3 } from '../libs/awsLib';
 import config from '../config';
+import { API } from "aws-amplify";
 import './NewNote.css';
 
 const NewNote = () => {
@@ -28,6 +30,21 @@ const NewNote = () => {
             return;
         }
         setIsLoading(true);
+
+        try {
+          const attachment = file.current ? await uploadToS3(file.current) : null;
+          await createNote({ content, attachment });
+          history.push('/');
+        } catch(error) {
+          onError(e);
+          setIsLoading(false);
+        }
+    }
+
+    const createNote = (note) => {
+      return API.post("notes", "/notes", {
+        body: note
+      });
     }
 
     return(
