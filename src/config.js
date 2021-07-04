@@ -14,6 +14,7 @@ const config = {
       IDENTITY_POOL_ID: "ap-southeast-2:01bfa4dc-4f51-4ad4-beef-367fb11710d2",
     },
     maxAttachmentSize: 5000000,
+    STRIPE_KEY: 'pk_test_51HAoKfAme8pLIFa57VkXY6WFQJgWUfzVg344SamAWiFQClM2Dj7s5q8Tsyt8xmtIVZbIu2de2vmhDT1AHaJFHLNR00kKONAR1e'
   };
   
   export default config;
