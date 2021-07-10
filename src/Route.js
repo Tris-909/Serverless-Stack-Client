@@ -2,7 +2,6 @@ import React from "react";
 import { Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
-import Signup from "./containers/SignUp";
 import NewNote from "./containers/NewNote";
 import SingleNote from "./containers/SingleNote";
 import Settings from "./containers/Setting";
@@ -14,11 +13,8 @@ import { Login } from "./containers";
 export default function Routes() {
   return (
     <Switch>
-      <UnauthenticatedRoute exact path="/login">
+      <UnauthenticatedRoute exact path="/auth">
         <Login />
-      </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/signup">
-        <Signup />
       </UnauthenticatedRoute>
       <NavBar>
         <AuthenticatedRoute exact path="/settings">
