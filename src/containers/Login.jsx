@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import { useAppContext } from "../libs/context-libs";
+import useBreakPoints from "../libs/useMediaQueries";
 import {
   Grid,
   GridItem,
@@ -21,6 +22,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { isXS, isSM, isMD, isLG, isExLg } = useBreakPoints();
 
   const validateForm = () => {
     return email.length > 0 && password.length > 0;
@@ -48,7 +50,7 @@ const Login = () => {
       alignContent="center"
       className="loginPage"
     >
-      <GridItem colStart={8} colEnd={12}>
+      <GridItem colStart={4} colEnd={10}>
         <Box borderWidth="1px" borderRadius="lg" bg="#f2f2f7" p="10">
           <Heading
             as="h3"
