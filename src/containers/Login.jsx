@@ -22,7 +22,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { isXS, isSM, isMD, isLG, isExLg } = useBreakPoints();
+  const { isSM } = useBreakPoints();
 
   const validateForm = () => {
     return email.length > 0 && password.length > 0;
@@ -50,11 +50,11 @@ const Login = () => {
       alignContent="center"
       className="loginPage"
     >
-      <GridItem colStart={4} colEnd={10}>
+      <GridItem colStart={isSM ? 2 : 4} colEnd={isSM ? 12 : 10}>
         <Box borderWidth="1px" borderRadius="lg" bg="#f2f2f7" p="10">
           <Heading
             as="h3"
-            size="3xl"
+            fontSize={isSM ? "6rem" : "3rem"}
             className="FormHeader"
             textAlign="center"
             marginBottom={14}
@@ -64,19 +64,21 @@ const Login = () => {
           </Heading>
           <form onSubmit={handleSubmit}>
             <FormControl isInvalid={error} id="email">
-              <FormLabel>Email</FormLabel>
+              <FormLabel fontSize={isSM ? "32px" : "16px"}>Email</FormLabel>
               <Input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                size={isSM ? "lg" : "md"}
                 className="Input"
               />
               <FormErrorMessage>{error}</FormErrorMessage>
             </FormControl>
             <FormControl id="password" marginTop={4}>
-              <FormLabel>Password</FormLabel>
+              <FormLabel fontSize={isSM ? "32px" : "16px"}>Password</FormLabel>
               <Input
                 type="password"
                 value={password}
+                size={isSM ? "lg" : "md"}
                 onChange={(e) => setPassword(e.target.value)}
                 className="Input"
               />
@@ -89,13 +91,19 @@ const Login = () => {
                 bg="#F56565"
                 color="white"
                 variant="solid"
-                marginTop={6}
-                marginBottom={6}
+                marginTop={isSM ? 12 : 6}
+                marginBottom={isSM ? 12 : 6}
+                p={isSM ? 8 : 0}
+                fontSize={isSM ? "32px" : "16px"}
                 className="SubmitButton"
               >
                 Login
               </Button>
-              <Text justifySelf="flex-end" className="SignUp">
+              <Text
+                justifySelf="flex-end"
+                className="SignUp"
+                fontSize={isSM ? "32px" : "16px"}
+              >
                 Sign Up Here
               </Text>
             </Grid>
