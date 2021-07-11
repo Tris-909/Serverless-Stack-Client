@@ -1,38 +1,45 @@
 import React from "react";
+import UnauthenticatedRoute from "./routes/UnAuthenticatedRoute";
+import PrivateRoute from "./routes/PrivateRoutes";
 import { Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
 import NewNote from "./containers/NewNote";
 import SingleNote from "./containers/SingleNote";
 import Settings from "./containers/Setting";
-import AuthenticatedRoute from "./components/AuthenticatedRoute/AuthenticatedRoute";
-import UnauthenticatedRoute from "./components/UnAuthenticatedRoute/UnAuthenticatedRoute";
-import NavBar from "./components/NavBar/NavBar";
+
+import { useAppContext } from "./libs/context-libs";
 import { Login } from "./containers";
 
 export default function Routes() {
+  const { isAuthenticated } = useAppContext();
+
   return (
     <Switch>
       <UnauthenticatedRoute exact path="/auth">
         <Login />
       </UnauthenticatedRoute>
-      <NavBar>
-        <AuthenticatedRoute exact path="/settings">
-          <Settings />
-        </AuthenticatedRoute>
-        <AuthenticatedRoute path="/notes/:id">
-          <SingleNote />
-        </AuthenticatedRoute>
-        <AuthenticatedRoute exact path="/notes/new">
-          <NewNote />
-        </AuthenticatedRoute>
-        <AuthenticatedRoute exact path="/">
-          <Home />
-        </AuthenticatedRoute>
-        <AuthenticatedRoute>
-          <NotFound />
-        </AuthenticatedRoute>
-      </NavBar>
+      <PrivateRoute
+        isAuthenticated={isAuthenticated}
+        component={Settings}
+        path="/settings"
+      />
+      <PrivateRoute
+        isAuthenticated={isAuthenticated}
+        component={SingleNote}
+        path="/notes/:id"
+      />
+      <PrivateRoute
+        isAuthenticated={isAuthenticated}
+        component={NewNote}
+        path="/notes/new"
+      />
+      <PrivateRoute
+        isAuthenticated={isAuthenticated}
+        component={Home}
+        path="/"
+      />
+      <PrivateRoute isAuthenticated={isAuthenticated} component={NotFound} />
     </Switch>
   );
 }

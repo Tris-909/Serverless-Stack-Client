@@ -63,18 +63,10 @@ const Home = () => {
 
   return (
     <div className="Home">
-      {isAuthenticated ? (
-        <div className="notes">
-          <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Notes</h2>
-          <ListGroup>{!isLoading && renderNotesList(notes)}</ListGroup>
-        </div>
-      ) : (
-        <div className="lander">
-          <h1>Scratch</h1>
-          <p className="text-muted">A simple note taking app</p>
-          <p className="text-muted">Please LogIn</p>
-        </div>
-      )}
+      <div className="notes">
+        <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Notes</h2>
+        <ListGroup>{!isLoading && renderNotesList(notes)}</ListGroup>
+      </div>
     </div>
   );
 };
