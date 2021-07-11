@@ -1,0 +1,15 @@
+.Home {
+  background-color: var(--bg-color);
+  height: 100vh;
+}
+
+.logo {
+  font-family: var(--title-font-family);
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+}
+
+.css-6e3h0h {
+  background-color: var(--bg-color) !important;
+}
