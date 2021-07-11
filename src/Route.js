@@ -4,7 +4,6 @@ import PrivateRoute from "./routes/PrivateRoutes";
 import { Switch } from "react-router-dom";
 import BasicLayout from "./containers/BasicLayout";
 import NotFound from "./containers/NotFound";
-import NewNote from "./containers/NewNote";
 import SingleNote from "./containers/SingleNote";
 import Settings from "./containers/Setting";
 import Home from "./containers/Home";
@@ -36,11 +35,6 @@ export default function Routes() {
             isAuthenticated={isAuthenticated}
             component={Home}
             path="/"
-          />
-          <PrivateRoute
-            isAuthenticated={isAuthenticated}
-            component={NewNote}
-            path="/notes/new"
           />
           <PrivateRoute
             isAuthenticated={isAuthenticated}

@@ -11,5 +11,6 @@
 }
 
 .css-6e3h0h {
+  /* override background-color for Drawer */
   background-color: var(--bg-color) !important;
 }
