@@ -26,8 +26,8 @@ const Login = () => {
   const [confirmationCode, setConfirmationCode] = useState("");
   const [error, setError] = useState("");
   const [inputValid, setInputValid] = useState("");
-  // signin || signup || confirmsignup
-  const [formState, setFormState] = useState("signin");
+  // signin || signup || confirmsignup || forgotpassword || confirmchangepassword
+  const [formState, setFormState] = useState("confirmchangepassword");
   const history = useHistory();
   const { isSM } = useBreakPoints();
 
@@ -35,9 +35,11 @@ const Login = () => {
     return email.length > 0 && password.length > 0;
   };
 
-  const changeFormState = (newState) => {
+  const changeFormState = (newState, forgotPassword = false) => {
     // Reset all value
-    setEmail("");
+    if (!forgotPassword) {
+      setEmail("");
+    }
     setPassword("");
     setConfirmPassword("");
     setConfirmationCode("");
@@ -112,6 +114,43 @@ const Login = () => {
     }
   };
 
+  const handleSubmitChangePassword = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const data = await Auth.forgotPassword(email);
+      setIsLoading(false);
+      changeFormState("confirmchangepassword", true);
+    } catch (error) {
+      setError(error.message);
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmitConfirmChangePassword = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      await Auth.forgotPasswordSubmit(email, confirmationCode, password);
+      await Auth.signIn(email, password);
+      setIsAuthenticated(true);
+      setIsLoading(false);
+    } catch (error) {
+      if (error.code === "CodeMismatchException") {
+        setInputValid("confirmationCode");
+        setError("Your confirmation code is invalid");
+      } else if (error.code === "InvalidPasswordException") {
+        setInputValid("password");
+        setError(
+          "Your password must be at least 8 characters long with 1 number and 1 symbol and 1 uppercase"
+        );
+      }
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Grid
       templateColumns="repeat(12, 1fr)"
@@ -142,6 +181,9 @@ const Login = () => {
             {formState === "signup" && "Sign Up"}
             {formState === "confirmsignup" &&
               "We've just sent the code to your email"}
+            {formState === "forgotpassword" && "Forgot Password"}
+            {formState === "confirmchangepassword" &&
+              "Please enter the code we've just sent to your email and the new password"}
           </Heading>
           {formState === "signin" && (
             <form onSubmit={handleSubmitSignIn}>
@@ -167,7 +209,11 @@ const Login = () => {
                   className="Input"
                 />
               </FormControl>
-              <Grid templateColumns="repeat(2, 1fr)" alignItems="center">
+              <Grid
+                templateColumns="repeat(2, 1fr)"
+                alignItems="center"
+                marginTop={2}
+              >
                 <Button
                   type="submit"
                   isLoading={isLoading}
@@ -183,14 +229,23 @@ const Login = () => {
                 >
                   Login
                 </Button>
-                <Text
-                  justifySelf="flex-end"
-                  className="SignUp"
-                  fontSize={isSM ? "32px" : "16px"}
-                  onClick={() => changeFormState("signup")}
-                >
-                  Sign Up Here
-                </Text>
+                <Box justifySelf="flex-end">
+                  <Text
+                    className="SignUp"
+                    fontSize={isSM ? "32px" : "16px"}
+                    onClick={() => changeFormState("signup")}
+                  >
+                    Sign Up Here
+                  </Text>
+                  <Text
+                    className="SignUp"
+                    marginTop={2}
+                    fontSize={isSM ? "32px" : "16px"}
+                    onClick={() => changeFormState("forgotpassword")}
+                  >
+                    Forgot Password
+                  </Text>
+                </Box>
               </Grid>
             </form>
           )}
@@ -257,14 +312,25 @@ const Login = () => {
                 >
                   Sign Up
                 </Button>
-                <Text
-                  justifySelf="flex-end"
-                  className="SignUp"
-                  fontSize={isSM ? "32px" : "16px"}
-                  onClick={() => changeFormState("signin")}
-                >
-                  Already has an account ? Sign In
-                </Text>
+                <Box justifySelf="flex-end">
+                  <Text
+                    className="SignUp"
+                    fontSize={isSM ? "32px" : "16px"}
+                    onClick={() => changeFormState("signin")}
+                  >
+                    Already has an account ? Sign In
+                  </Text>
+                  <Text
+                    className="SignUp"
+                    display="flex"
+                    justifyContent="flex-end"
+                    marginTop={2}
+                    fontSize={isSM ? "32px" : "16px"}
+                    onClick={() => changeFormState("forgotpassword")}
+                  >
+                    Forgot Password
+                  </Text>
+                </Box>
               </Grid>
             </form>
           )}
@@ -299,6 +365,113 @@ const Login = () => {
                   Verify
                 </Button>
               </Grid>
+            </form>
+          )}
+          {formState === "forgotpassword" && (
+            <form onSubmit={handleSubmitChangePassword}>
+              <FormControl isInvalid={error} id="code">
+                <FormLabel fontSize={isSM ? "32px" : "16px"}>Email</FormLabel>
+                <Input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  size={isSM ? "lg" : "md"}
+                  className="Input"
+                />
+                <FormErrorMessage>{error}</FormErrorMessage>
+              </FormControl>
+              <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Button
+                  type="submit"
+                  isLoading={isLoading}
+                  disabled={email.length === 0}
+                  bg="#F56565"
+                  color="white"
+                  variant="solid"
+                  marginTop={isSM ? 12 : 6}
+                  marginBottom={isSM ? 12 : 6}
+                  p={6}
+                  fontSize={isSM ? "32px" : "16px"}
+                  className="SubmitButton"
+                >
+                  Reset Password
+                </Button>
+                <Text
+                  className="SignUp"
+                  fontSize={isSM ? "32px" : "16px"}
+                  onClick={() => changeFormState("signin")}
+                >
+                  Sign In
+                </Text>
+              </Box>
+            </form>
+          )}
+          {formState === "confirmchangepassword" && (
+            <form onSubmit={handleSubmitConfirmChangePassword}>
+              <FormControl
+                isInvalid={inputValid === "confirmationCode"}
+                id="code"
+              >
+                <FormLabel fontSize={isSM ? "32px" : "16px"}>
+                  Confirmation Code
+                </FormLabel>
+                <Input
+                  value={confirmationCode}
+                  onChange={(e) => setConfirmationCode(e.target.value)}
+                  size={isSM ? "lg" : "md"}
+                  className="Input"
+                />
+                <FormErrorMessage>{error}</FormErrorMessage>
+              </FormControl>
+              <FormControl
+                isInvalid={inputValid === "password"}
+                id="code"
+                marginTop={4}
+              >
+                <FormLabel fontSize={isSM ? "32px" : "16px"}>
+                  New Password
+                </FormLabel>
+                <Input
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  size={isSM ? "lg" : "md"}
+                  className="Input"
+                  type="password"
+                />
+                <FormErrorMessage>{error}</FormErrorMessage>
+              </FormControl>
+              <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Button
+                  type="submit"
+                  isLoading={isLoading}
+                  bg="#F56565"
+                  color="white"
+                  variant="solid"
+                  marginTop={isSM ? 12 : 6}
+                  marginBottom={isSM ? 12 : 6}
+                  p={6}
+                  fontSize={isSM ? "32px" : "16px"}
+                  className="SubmitButton"
+                >
+                  Confirm Change Password
+                </Button>
+                <Text
+                  className="SignUp"
+                  fontSize={isSM ? "32px" : "16px"}
+                  onClick={() => changeFormState("signin")}
+                >
+                  Sign In
+                </Text>
+              </Box>
             </form>
           )}
         </Box>
