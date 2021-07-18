@@ -27,7 +27,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [inputValid, setInputValid] = useState("");
   // signin || signup || confirmsignup || forgotpassword || confirmchangepassword
-  const [formState, setFormState] = useState("confirmchangepassword");
+  const [formState, setFormState] = useState("signin");
   const history = useHistory();
   const { isSM } = useBreakPoints();
 
