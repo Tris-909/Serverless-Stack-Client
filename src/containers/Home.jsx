@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Icon,
   Button,
@@ -13,6 +13,9 @@ import {
   FormLabel,
   useDisclosure,
   Textarea,
+  Box,
+  HStack,
+  Image,
 } from "@chakra-ui/react";
 import { SmallAddIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router";
@@ -30,9 +33,19 @@ const Home = () => {
 
   const file = useRef(null);
   const [content, setContent] = useState("");
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchLists();
+  }, []);
+
+  const fetchLists = async () => {
+    const result = await API.get("notes", "/notes");
+    setData(result);
+  };
 
   const handleFileChange = (e) => {
-    file.current = e.target.file[0];
+    file.current = e.target.files[0];
   };
 
   const createNote = (note) => {
@@ -56,7 +69,7 @@ const Home = () => {
     try {
       const attachment = file.current ? await uploadToS3(file.current) : null;
       await createNote({ content, attachment });
-      history.push("/");
+      onClose();
     } catch (error) {
       onError(e);
     }
@@ -75,7 +88,7 @@ const Home = () => {
           <ModalHeader>Create a new note</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <form onSubmit={handleSubmit}>
+            <form>
               <FormControl>
                 <FormLabel>Content</FormLabel>
                 <Textarea
@@ -94,7 +107,7 @@ const Home = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="green" mr={3}>
+            <Button colorScheme="green" mr={3} onClick={(e) => handleSubmit(e)}>
               Save
             </Button>
             <Button onClick={onClose}>Cancel</Button>
@@ -104,6 +117,28 @@ const Home = () => {
       <Button position="absolute" right="5" bottom="5" onClick={onOpen}>
         <Icon as={SmallAddIcon} boxSize={8} />
       </Button>
+      <HStack flexWrap="wrap" margin={3}>
+        {data.map((singleTodo) => {
+          return (
+            <Box
+              key={singleTodo.noteId}
+              width="fit-content"
+              background="white"
+              p={3}
+            >
+              {singleTodo.content}
+              {singleTodo.attachment && (
+                <Image
+                  boxSize="100px"
+                  objectFit="cover"
+                  src={`https://notes-app-upload-tritran.s3.ap-southeast-2.amazonaws.com/private/${singleTodo.userId}/${singleTodo.attachment}`}
+                  alt={singleTodo.id}
+                />
+              )}
+            </Box>
+          );
+        })}
+      </HStack>
     </div>
   );
 };
