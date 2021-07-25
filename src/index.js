@@ -32,12 +32,10 @@ Amplify.configure({
 });
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ChakraProvider>
-      <Router>
-        <App />
-      </Router>
-    </ChakraProvider>
-  </React.StrictMode>,
+  <ChakraProvider>
+    <Router>
+      <App />
+    </Router>
+  </ChakraProvider>,
   document.getElementById("root")
 );

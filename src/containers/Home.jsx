@@ -14,8 +14,6 @@ import {
   useDisclosure,
   Textarea,
   Box,
-  HStack,
-  Image,
 } from "@chakra-ui/react";
 import { SmallAddIcon } from "@chakra-ui/icons";
 import { onError } from "../libs/error-libs";
@@ -68,10 +66,16 @@ const Home = () => {
     try {
       const attachment = file.current ? await uploadToS3(file.current) : null;
       await createNote({ content, attachment });
+      fetchLists();
       onClose();
     } catch (error) {
       onError(e);
     }
+  };
+
+  const deleteNote = async (noteId) => {
+    await API.del("notes", `/notes/${noteId}`);
+    fetchLists();
   };
 
   return (
@@ -118,7 +122,13 @@ const Home = () => {
       </Button>
       <Box position="relative">
         {data.map((singleTodo) => {
-          return <Note note={singleTodo} />;
+          return (
+            <Note
+              key={singleTodo.noteId}
+              note={singleTodo}
+              deleteNote={deleteNote}
+            />
+          );
         })}
       </Box>
     </div>

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Image, HStack, Icon } from "@chakra-ui/react";
 import Draggable from "react-draggable";
 import { API } from "aws-amplify";
+import { CloseIcon } from "@chakra-ui/icons";
 import "./Note.css";
 
-const Note = ({ note }) => {
+const Note = ({ note, deleteNote }) => {
   const [position, setPosition] = useState({ x: note.x, y: note.y });
 
   const trackPosition = (data) => {
@@ -27,24 +28,33 @@ const Note = ({ note }) => {
       defaultPosition={{ x: note.x, y: note.y }}
     >
       <Box
-        key={note.noteId}
         width="fit-content"
         minWidth="250px"
         minHeight="250px"
+        borderRadius="7px"
         background="white"
-        p={3}
         className="drag"
       >
-        <Box marginBottom={2}>{note.content}</Box>
-        <Box marginBottom={2}>
-          {position.x} {position.y} {note.noteId}
-        </Box>
-        <Box width="250px" height="250px" position="relative">
+        <HStack my={2} px={2} width="250px">
+          <Box fontWeight="bold" width="90%">
+            {note.content}
+          </Box>
+          <Icon
+            as={CloseIcon}
+            zIndex={3}
+            onClick={() => deleteNote(note.noteId)}
+            cursor="pointer"
+          />
+        </HStack>
+
+        <Box width="260px" height="260px" position="relative">
           {note.attachment && (
             <>
               <Image
                 position="absolute"
                 objectFit="cover"
+                width="100%"
+                height="100%"
                 src={`https://notes-app-upload-tritran.s3.ap-southeast-2.amazonaws.com/private/${note.userId}/${note.attachment}`}
                 alt={note.id}
               />
