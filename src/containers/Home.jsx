@@ -18,16 +18,15 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { SmallAddIcon } from "@chakra-ui/icons";
-import { useHistory } from "react-router";
 import { onError } from "../libs/error-libs";
 import { uploadToS3 } from "../libs/awsLib";
 import config from "../config";
 import { API } from "aws-amplify";
+import Note from "../components/Note/Note";
 import "./Home.css";
 
 const Home = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const history = useHistory();
   const initialRef = useRef();
   const finalRef = useRef();
 
@@ -117,28 +116,11 @@ const Home = () => {
       <Button position="absolute" right="5" bottom="5" onClick={onOpen}>
         <Icon as={SmallAddIcon} boxSize={8} />
       </Button>
-      <HStack flexWrap="wrap" margin={3}>
+      <Box position="relative">
         {data.map((singleTodo) => {
-          return (
-            <Box
-              key={singleTodo.noteId}
-              width="fit-content"
-              background="white"
-              p={3}
-            >
-              {singleTodo.content}
-              {singleTodo.attachment && (
-                <Image
-                  boxSize="100px"
-                  objectFit="cover"
-                  src={`https://notes-app-upload-tritran.s3.ap-southeast-2.amazonaws.com/private/${singleTodo.userId}/${singleTodo.attachment}`}
-                  alt={singleTodo.id}
-                />
-              )}
-            </Box>
-          );
+          return <Note note={singleTodo} />;
         })}
-      </HStack>
+      </Box>
     </div>
   );
 };
