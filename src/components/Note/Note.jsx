@@ -3,7 +3,7 @@ import { Box, Image, HStack, Icon } from "@chakra-ui/react";
 import Draggable from "react-draggable";
 import { API } from "aws-amplify";
 import { CloseIcon } from "@chakra-ui/icons";
-import "./Note.css";
+import "./Note.scss";
 
 const Note = ({ note, deleteNote }) => {
   const [position, setPosition] = useState({ x: note.x, y: note.y });

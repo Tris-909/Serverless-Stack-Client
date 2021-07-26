@@ -1,10 +1,10 @@
 import { HStack, Text, Icon } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { LinkWrapper } from "../LinkWrapper/LinkWrapper";
-import { useAppContext } from "../../libs/context-libs";
+import { useAppContext } from "libs/context-libs";
 import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import "./NavBar.css";
+import "./NavBar.scss";
 
 const NavBar = ({ onOpen }) => {
   const { setIsAuthenticated } = useAppContext();
