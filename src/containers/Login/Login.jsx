@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
-import { useAppContext } from "../libs/context-libs";
-import useBreakPoints from "../libs/useMediaQueries";
+import { useAppContext } from "../../libs/context-libs";
+import useBreakPoints from "../../libs/useMediaQueries";
 import {
   Grid,
   GridItem,
@@ -15,7 +15,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
-import "./Login.css";
+import "./Login.scss";
 
 const Login = () => {
   const { setIsAuthenticated } = useAppContext();

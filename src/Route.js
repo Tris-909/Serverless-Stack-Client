@@ -1,15 +1,9 @@
 import React from "react";
-import UnauthenticatedRoute from "./routes/UnAuthenticatedRoute";
-import PrivateRoute from "./routes/PrivateRoutes";
+import UnauthenticatedRoute from "routes/UnAuthenticatedRoute";
+import PrivateRoute from "routes/PrivateRoutes";
 import { Switch } from "react-router-dom";
-import BasicLayout from "./containers/BasicLayout";
-import NotFound from "./containers/NotFound";
-import SingleNote from "./containers/SingleNote";
-import Settings from "./containers/Setting";
-import Home from "./containers/Home";
-
-import { useAppContext } from "./libs/context-libs";
-import { Login } from "./containers";
+import { useAppContext } from "libs/context-libs";
+import { BasicLayout, Login, SingleNote, Home, NotFound } from "containers";
 
 export default function Routes() {
   const { isAuthenticated } = useAppContext();
@@ -21,11 +15,6 @@ export default function Routes() {
       </UnauthenticatedRoute>
       <BasicLayout>
         <Switch>
-          <PrivateRoute
-            isAuthenticated={isAuthenticated}
-            component={Settings}
-            path="/settings"
-          />
           <PrivateRoute
             isAuthenticated={isAuthenticated}
             component={SingleNote}
