@@ -16,11 +16,11 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { SmallAddIcon } from "@chakra-ui/icons";
-import { onError } from "../../libs/error-libs";
-import { uploadToS3 } from "../../libs/awsLib";
-import config from "../../config";
+import { onError } from "libs/error-libs";
+import { uploadToS3 } from "libs/awsLib";
+import config from "config";
 import { API } from "aws-amplify";
-import Note from "../../components/Note/Note";
+import Note from "components/Note/Note";
 
 const Home = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

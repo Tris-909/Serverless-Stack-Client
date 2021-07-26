@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
-import { useAppContext } from "../../libs/context-libs";
-import useBreakPoints from "../../libs/useMediaQueries";
+import { useAppContext } from "libs/context-libs";
+import useBreakPoints from "libs/useMediaQueries";
 import {
   Grid,
   GridItem,

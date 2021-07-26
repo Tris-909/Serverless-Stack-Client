@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { API, Storage } from "aws-amplify";
-import { onError } from "../../libs/error-libs";
-import config from "../../config";
+import { onError } from "libs/error-libs";
+import config from "config";
 import Form from "react-bootstrap/Form";
-import LoaderButton from "../../components/Loader/LoadButton";
-import { uploadToS3 } from "../../libs/awsLib";
+import LoaderButton from "components/Loader/LoadButton";
+import { uploadToS3 } from "libs/awsLib";
 import "./SingleNote.scss";
 
 const SingleNote = () => {
