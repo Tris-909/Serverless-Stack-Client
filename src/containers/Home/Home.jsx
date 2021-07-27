@@ -14,6 +14,7 @@ import {
   useDisclosure,
   Textarea,
   Box,
+  Input,
 } from "@chakra-ui/react";
 import { SmallAddIcon } from "@chakra-ui/icons";
 import { onError } from "libs/error-libs";
@@ -27,8 +28,9 @@ const Home = () => {
   const initialRef = useRef();
   const finalRef = useRef();
 
-  const file = useRef(null);
+  const [header, setHeader] = useState("");
   const [content, setContent] = useState("");
+  const file = useRef(null);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const Home = () => {
 
     try {
       const attachment = file.current ? await uploadToS3(file.current) : null;
-      await createNote({ content, attachment });
+      await createNote({ header, content, attachment });
       fetchLists();
       onClose();
     } catch (error) {
@@ -91,6 +93,16 @@ const Home = () => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <form>
+              <FormControl>
+                <FormLabel>Content</FormLabel>
+                <Input
+                  value={header}
+                  onChange={(e) => setHeader(e.target.value)}
+                  ref={initialRef}
+                  placeholder="Note Header"
+                />
+              </FormControl>
+
               <FormControl>
                 <FormLabel>Content</FormLabel>
                 <Textarea

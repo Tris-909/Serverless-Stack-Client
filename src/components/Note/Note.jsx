@@ -30,14 +30,14 @@ const Note = ({ note, deleteNote }) => {
       <Box
         width="fit-content"
         minWidth="250px"
-        minHeight="250px"
+        minHeight={note.attachment ? "250px" : "auto"}
         borderRadius="7px"
         background="white"
         className="drag"
       >
         <HStack my={2} px={2} width="250px">
           <Box fontWeight="bold" width="90%">
-            {note.content}
+            {note.header}
           </Box>
           <Icon
             as={CloseIcon}
@@ -47,8 +47,12 @@ const Note = ({ note, deleteNote }) => {
           />
         </HStack>
 
-        <Box width="260px" height="260px" position="relative">
-          {note.attachment && (
+        <Box
+          width="260px"
+          height={note.attachment ? "260px" : "150px"}
+          position="relative"
+        >
+          {note.attachment ? (
             <>
               <Image
                 position="absolute"
@@ -66,6 +70,10 @@ const Note = ({ note, deleteNote }) => {
                 backgroundColor="transparent"
               ></Box>
             </>
+          ) : (
+            <Box height="260px" p={2}>
+              {note.content}
+            </Box>
           )}
         </Box>
       </Box>
