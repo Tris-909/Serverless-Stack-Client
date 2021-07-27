@@ -1,8 +1,18 @@
 import React, { useState } from "react";
-import { Box, Image, HStack, Icon } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
+} from "@chakra-ui/react";
 import Draggable from "react-draggable";
 import { API } from "aws-amplify";
-import { CloseIcon } from "@chakra-ui/icons";
+import { CloseIcon, SettingsIcon } from "@chakra-ui/icons";
+import { BsPencil } from "react-icons/bs";
 import "./Note.scss";
 
 const Note = ({ note, deleteNote }) => {
@@ -35,16 +45,29 @@ const Note = ({ note, deleteNote }) => {
         background="white"
         className="drag"
       >
-        <HStack my={2} px={2} width="250px">
-          <Box fontWeight="bold" width="90%">
+        <HStack my={2} paddingLeft={2} width="250px">
+          <Box fontWeight="bold" width="100%">
             {note.header}
           </Box>
-          <Icon
-            as={CloseIcon}
-            zIndex={3}
-            onClick={() => deleteNote(note.noteId)}
-            cursor="pointer"
-          />
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<SettingsIcon />}
+              variant="none"
+            />
+            <MenuList>
+              <MenuItem icon={<BsPencil viewBox="0 0 15 15" />}>
+                Edit Note
+              </MenuItem>
+              <MenuItem
+                icon={<CloseIcon />}
+                onClick={() => deleteNote(note.noteId)}
+              >
+                Delete Note
+              </MenuItem>
+            </MenuList>
+          </Menu>
         </HStack>
 
         <Box
