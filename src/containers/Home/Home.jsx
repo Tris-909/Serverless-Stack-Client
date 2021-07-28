@@ -138,6 +138,7 @@ const Home = () => {
               key={singleTodo.noteId}
               note={singleTodo}
               deleteNote={deleteNote}
+              fetchLists={fetchLists}
             />
           );
         })}
