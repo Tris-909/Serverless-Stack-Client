@@ -27,3 +27,8 @@
 ## July 27 2021 
 - Building out the EditNote Modal
 - Adding ability to edit note header, content, attachment (image)
+
+## July 31 2021 
+- Creating CommonModal component, used this between all kind of different modals
+- Creating EditNoteModal to re-factor code
+- Moving out editNote logic from Note component to EditNote Modal
