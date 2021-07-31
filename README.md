@@ -20,3 +20,10 @@
 - Adding `SCSS` into project
 - Re-factoring all structure of the codebase
 - Using `absolute path imports` for all imports
+
+## July 26 2021 
+- Adding Header field to Note and Fixing the API
+
+## July 27 2021 
+- Building out the EditNote Modal
+- Adding ability to edit note header, content, attachment (image)
