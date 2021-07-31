@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   Box,
   Image,
@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import Draggable from "react-draggable";
 import { API } from "aws-amplify";
-import { CloseIcon, SettingsIcon } from "@chakra-ui/icons";
+import { CloseIcon, SettingsIcon, Search2Icon } from "@chakra-ui/icons";
 import { BsPencil } from "react-icons/bs";
 import config from "config";
 import { uploadToS3 } from "libs/awsLib";
@@ -42,6 +42,7 @@ const Note = ({ note, deleteNote, fetchLists }) => {
   const [previewImage, setPreviewImage] = useState(null);
   const [deleteImage, setDeleteImage] = useState(false);
   const file = useRef(null);
+  const [onHide, setOnHide] = useState(true);
 
   const trackPosition = (data) => {
     setPosition({ x: data.x, y: data.y });
@@ -171,7 +172,31 @@ const Note = ({ note, deleteNote, fetchLists }) => {
                   zIndex={2}
                   position="absolute"
                   backgroundColor="transparent"
-                ></Box>
+                  onMouseEnter={() => setOnHide(false)}
+                  onMouseLeave={() => setOnHide(true)}
+                >
+                  <Box
+                    position="relative"
+                    left="40%"
+                    top="40%"
+                    width="48px"
+                    height="48px"
+                    bg="#2e2f30"
+                    borderRadius="full"
+                    transition="visibility 0s, opacity 0.5s"
+                    visibility={onHide ? "hidden" : "visible"}
+                    opacity={onHide ? 0 : 0.7}
+                    cursor="pointer"
+                  >
+                    <Search2Icon
+                      color="white"
+                      marginInlineEnd="0px"
+                      position="absolute"
+                      top="34%"
+                      left="33%"
+                    />
+                  </Box>
+                </Box>
               </>
             ) : (
               <Box height="260px" p={2}>
