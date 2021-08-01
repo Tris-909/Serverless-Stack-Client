@@ -46,6 +46,12 @@ const Home = () => {
     file.current = e.target.files[0];
   };
 
+  const clearInputState = () => {
+    setHeader("");
+    setContent("");
+    file.current = {};
+  };
+
   const createNote = (note) => {
     return API.post("notes", "/notes", {
       body: note,
@@ -67,6 +73,7 @@ const Home = () => {
     try {
       const attachment = file.current ? await uploadToS3(file.current) : null;
       await createNote({ header, content, attachment });
+      clearInputState();
       fetchLists();
       onClose();
     } catch (error) {
