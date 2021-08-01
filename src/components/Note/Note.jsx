@@ -13,11 +13,12 @@ import {
 import EditNoteModal from "components/NoteModal/EditNoteModal";
 import DetailNoteModal from "components/NoteModal/DetailNoteModal";
 import Draggable from "react-draggable";
+import { deleteFromS3 } from "libs/awsLib";
 import { API } from "aws-amplify";
 import { CloseIcon, SettingsIcon } from "@chakra-ui/icons";
 import "./Note.scss";
 
-const Note = ({ note, deleteNote, fetchLists }) => {
+const Note = ({ note, fetchLists }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [position, setPosition] = useState({ x: note.x, y: note.y });
   const [onHide, setOnHide] = useState(true);
@@ -26,6 +27,12 @@ const Note = ({ note, deleteNote, fetchLists }) => {
   const trackPosition = (data) => {
     setPosition({ x: data.x, y: data.y });
     savePositionToDatabases();
+  };
+
+  const deleteNote = async (noteId, objectKey) => {
+    await API.del("notes", `/notes/${noteId}`);
+    await deleteFromS3(objectKey);
+    fetchLists();
   };
 
   const savePositionToDatabases = async () => {

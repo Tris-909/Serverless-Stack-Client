@@ -1,25 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  Icon,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  FormControl,
-  FormLabel,
-  useDisclosure,
-  Textarea,
-  Box,
-  Input,
-} from "@chakra-ui/react";
-import { SmallAddIcon } from "@chakra-ui/icons";
-import { onError } from "libs/error-libs";
-import { uploadToS3, deleteFromS3 } from "libs/awsLib";
-import config from "config";
+import React, { useState, useEffect } from "react";
+import { useDisclosure, Box } from "@chakra-ui/react";
 import { API } from "aws-amplify";
 import Note from "components/Note/Note";
 import CreateNoteModal from "components/NoteModal/CreateNoteModal";
@@ -37,12 +17,6 @@ const Home = () => {
     setData(result);
   };
 
-  const deleteNote = async (noteId, objectKey) => {
-    await API.del("notes", `/notes/${noteId}`);
-    await deleteFromS3(objectKey);
-    fetchLists();
-  };
-
   return (
     <Box className="home">
       <CreateNoteModal
@@ -57,7 +31,6 @@ const Home = () => {
             <Note
               key={singleTodo.noteId}
               note={singleTodo}
-              deleteNote={deleteNote}
               fetchLists={fetchLists}
             />
           );
