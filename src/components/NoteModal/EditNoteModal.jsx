@@ -106,6 +106,7 @@ const EditNoteModal = ({
           onClose={onClose}
           initialFocusRef={initialRef}
           finalFocusRef={finalRef}
+          scrollBehavior="outside"
         >
           <ModalHeader>Edit</ModalHeader>
           <ModalCloseButton />
