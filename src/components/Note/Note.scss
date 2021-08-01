@@ -3,3 +3,11 @@
   cursor: move;
   user-select: none;
 }
+
+.hoverAnimation {
+  transition: transform 0.8s ease-out;
+}
+
+.hoverAnimation:hover {
+  transform: rotate(180deg);
+}

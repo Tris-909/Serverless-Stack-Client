@@ -8,16 +8,16 @@ const DetailNoteModal = ({
   onOpen,
   onClose,
   onHide,
+  setOnHide,
   note,
   setCurrentModalState,
   currentModalState,
 }) => {
   const onOpenDetailModal = () => {
+    setOnHide(true);
     setCurrentModalState("detail");
     onOpen();
   };
-
-  console.log("note", note);
 
   return (
     <Box

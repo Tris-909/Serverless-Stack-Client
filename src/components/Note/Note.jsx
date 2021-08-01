@@ -59,10 +59,10 @@ const Note = ({ note, deleteNote, fetchLists }) => {
               <MenuButton
                 as={IconButton}
                 aria-label="Options"
-                icon={<SettingsIcon />}
+                icon={<SettingsIcon className="hoverAnimation" />}
                 variant="none"
               />
-              <MenuList>
+              <MenuList zIndex="2">
                 <EditNoteModal
                   note={note}
                   isOpen={isOpen}
@@ -85,6 +85,7 @@ const Note = ({ note, deleteNote, fetchLists }) => {
           <Box
             width="260px"
             height={note.attachment ? "260px" : "150px"}
+            zIndex="1"
             position="relative"
           >
             {note.attachment ? (
@@ -112,6 +113,7 @@ const Note = ({ note, deleteNote, fetchLists }) => {
                     onClose={onClose}
                     onOpen={onOpen}
                     onHide={onHide}
+                    setOnHide={setOnHide}
                     currentModalState={currentModalState}
                     setCurrentModalState={setCurrentModalState}
                   />
