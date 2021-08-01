@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Routes from "./Route";
 import { AppContext } from "./libs/context-libs";
 import { Auth } from "aws-amplify";
-import "./App.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
