@@ -10,16 +10,18 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import EditNoteModal from "../NoteModal/EditNoteModal";
+import EditNoteModal from "components/NoteModal/EditNoteModal";
+import DetailNoteModal from "components/NoteModal/DetailNoteModal";
 import Draggable from "react-draggable";
 import { API } from "aws-amplify";
-import { CloseIcon, SettingsIcon, Search2Icon } from "@chakra-ui/icons";
+import { CloseIcon, SettingsIcon } from "@chakra-ui/icons";
 import "./Note.scss";
 
 const Note = ({ note, deleteNote, fetchLists }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [position, setPosition] = useState({ x: note.x, y: note.y });
   const [onHide, setOnHide] = useState(true);
+  const [currentModalState, setCurrentModalState] = useState(null);
 
   const trackPosition = (data) => {
     setPosition({ x: data.x, y: data.y });
@@ -66,6 +68,8 @@ const Note = ({ note, deleteNote, fetchLists }) => {
                   isOpen={isOpen}
                   onClose={onClose}
                   onOpen={onOpen}
+                  currentModalState={currentModalState}
+                  setCurrentModalState={setCurrentModalState}
                   fetchLists={fetchLists}
                 />
                 <MenuItem
@@ -115,12 +119,13 @@ const Note = ({ note, deleteNote, fetchLists }) => {
                     opacity={onHide ? 0 : 0.7}
                     cursor="pointer"
                   >
-                    <Search2Icon
-                      color="white"
-                      marginInlineEnd="0px"
-                      position="absolute"
-                      top="34%"
-                      left="33%"
+                    <DetailNoteModal
+                      note={note}
+                      isOpen={isOpen}
+                      onClose={onClose}
+                      onOpen={onOpen}
+                      currentModalState={currentModalState}
+                      setCurrentModalState={setCurrentModalState}
                     />
                   </Box>
                 </Box>
