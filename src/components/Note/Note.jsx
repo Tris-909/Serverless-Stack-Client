@@ -106,28 +106,15 @@ const Note = ({ note, deleteNote, fetchLists }) => {
                   onMouseEnter={() => setOnHide(false)}
                   onMouseLeave={() => setOnHide(true)}
                 >
-                  <Box
-                    position="relative"
-                    left="40%"
-                    top="40%"
-                    width="48px"
-                    height="48px"
-                    bg="#2e2f30"
-                    borderRadius="full"
-                    transition="visibility 0s, opacity 0.5s"
-                    visibility={onHide ? "hidden" : "visible"}
-                    opacity={onHide ? 0 : 0.7}
-                    cursor="pointer"
-                  >
-                    <DetailNoteModal
-                      note={note}
-                      isOpen={isOpen}
-                      onClose={onClose}
-                      onOpen={onOpen}
-                      currentModalState={currentModalState}
-                      setCurrentModalState={setCurrentModalState}
-                    />
-                  </Box>
+                  <DetailNoteModal
+                    note={note}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    onOpen={onOpen}
+                    onHide={onHide}
+                    currentModalState={currentModalState}
+                    setCurrentModalState={setCurrentModalState}
+                  />
                 </Box>
               </>
             ) : (
