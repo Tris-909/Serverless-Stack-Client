@@ -11,8 +11,11 @@ import {
   ModalFooter,
   Button,
   Icon,
+  Image,
+  HStack,
+  Box,
 } from "@chakra-ui/react";
-import { SmallAddIcon } from "@chakra-ui/icons";
+import { SmallAddIcon, CloseIcon } from "@chakra-ui/icons";
 import config from "config";
 import { API } from "aws-amplify";
 import { uploadToS3 } from "libs/awsLib";
@@ -21,16 +24,25 @@ import { onError } from "libs/error-libs";
 const CreateNoteModal = ({ isOpen, onOpen, onClose, fetchLists }) => {
   const [header, setHeader] = useState("");
   const [content, setContent] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
   const file = useRef(null);
+  const inputRef = useRef();
 
   const handleFileChange = (e) => {
     file.current = e.target.files[0];
+    setPreviewImage(URL.createObjectURL(e.target.files[0]));
   };
 
   const clearInputState = () => {
     setHeader("");
     setContent("");
     file.current = {};
+  };
+
+  const clearFileHandler = () => {
+    setPreviewImage(null);
+    inputRef.current.value = "";
+    console.log("file", inputRef.current.value);
   };
 
   const createNote = (note) => {
@@ -97,7 +109,33 @@ const CreateNoteModal = ({ isOpen, onOpen, onClose, fetchLists }) => {
 
             <FormControl mt={4}>
               <FormLabel>Image</FormLabel>
-              <input onChange={handleFileChange} type="file" id="file" />
+              {previewImage && (
+                <HStack alignItems="flex-start">
+                  <Image
+                    src={previewImage}
+                    alt="previewImage"
+                    border="1px solid #e2e8f0"
+                    width="350px"
+                    height="200px"
+                    marginBottom={3}
+                  />
+                  <Box
+                    cursor="pointer"
+                    marginInlineStart={0}
+                    p={4}
+                    border="1px solid #e2e8f0"
+                    onClick={() => clearFileHandler()}
+                  >
+                    <CloseIcon width="16px" height="16px" />
+                  </Box>
+                </HStack>
+              )}
+              <input
+                onChange={handleFileChange}
+                type="file"
+                id="file"
+                ref={inputRef}
+              />
             </FormControl>
           </form>
         </ModalBody>
