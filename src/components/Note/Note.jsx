@@ -74,7 +74,7 @@ const Note = ({ note, deleteNote, fetchLists }) => {
                 />
                 <MenuItem
                   icon={<CloseIcon />}
-                  onClick={() => deleteNote(note.noteId)}
+                  onClick={() => deleteNote(note.noteId, note.attachment)}
                 >
                   Delete Note
                 </MenuItem>

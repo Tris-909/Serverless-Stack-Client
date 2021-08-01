@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { SmallAddIcon } from "@chakra-ui/icons";
 import { onError } from "libs/error-libs";
-import { uploadToS3 } from "libs/awsLib";
+import { uploadToS3, deleteFromS3 } from "libs/awsLib";
 import config from "config";
 import { API } from "aws-amplify";
 import Note from "components/Note/Note";
@@ -74,8 +74,9 @@ const Home = () => {
     }
   };
 
-  const deleteNote = async (noteId) => {
+  const deleteNote = async (noteId, objectKey) => {
     await API.del("notes", `/notes/${noteId}`);
+    await deleteFromS3(objectKey);
     fetchLists();
   };
 
