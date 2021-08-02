@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDisclosure, Box } from "@chakra-ui/react";
-import { API } from "aws-amplify";
 import Note from "components/Note/Note";
 import CreateNoteModal from "components/NoteModal/CreateNoteModal";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchListNotes } from "redux/features/notes/note";
 
 const Home = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [data, setData] = useState([]);
+  const { list } = useSelector((state) => state.notes);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchLists();
   }, []);
 
   const fetchLists = async () => {
-    const result = await API.get("notes", "/notes");
-    setData(result);
+    dispatch(fetchListNotes());
   };
 
   return (
@@ -26,7 +27,7 @@ const Home = () => {
         fetchLists={fetchLists}
       />
       <Box position="relative">
-        {data.map((singleTodo) => {
+        {list.data.map((singleTodo) => {
           return (
             <Note
               key={singleTodo.noteId}
