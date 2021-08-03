@@ -21,12 +21,12 @@ const Home = () => {
 
   return (
     <>
-      <CreateNoteModal
+      {/* <CreateNoteModal
         isOpen={isOpen}
         onOpen={onOpen}
         onClose={onClose}
         fetchLists={fetchLists}
-      />
+      /> */}
       {list.data.map((singleTodo) => {
         return (
           <Note
@@ -36,7 +36,7 @@ const Home = () => {
           />
         );
       })}
-      {/* <SideHelp /> */}
+      <SideHelp />
     </>
   );
 };
