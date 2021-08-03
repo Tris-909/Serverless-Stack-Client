@@ -20,14 +20,8 @@ import "./Note.scss";
 
 const Note = ({ note, fetchLists }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [position, setPosition] = useState({ x: note.x, y: note.y });
   const [onHide, setOnHide] = useState(true);
   const [currentModalState, setCurrentModalState] = useState(null);
-
-  const trackPosition = (data) => {
-    setPosition({ x: data.x, y: data.y });
-    savePositionToDatabases();
-  };
 
   const deleteNote = async (noteId, objectKey) => {
     await API.del("notes", `/notes/${noteId}`);
@@ -35,18 +29,18 @@ const Note = ({ note, fetchLists }) => {
     fetchLists();
   };
 
-  const savePositionToDatabases = async () => {
+  const savePositionToDatabases = async (data) => {
     await API.put("notes", `/notes/drag/${note.noteId}`, {
       body: {
-        x: position.x,
-        y: position.y,
+        x: data.x,
+        y: data.y,
       },
     });
   };
 
   return (
     <Draggable
-      onDrag={(e, data) => trackPosition(data)}
+      onStop={(e, data) => savePositionToDatabases(data)}
       defaultPosition={{ x: note.x, y: note.y }}
       bounds="parent"
     >
