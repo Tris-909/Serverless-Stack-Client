@@ -45,96 +45,95 @@ const Note = ({ note, fetchLists }) => {
   };
 
   return (
-    <>
-      <Draggable
-        onDrag={(e, data) => trackPosition(data)}
-        defaultPosition={{ x: note.x, y: note.y }}
+    <Draggable
+      onDrag={(e, data) => trackPosition(data)}
+      defaultPosition={{ x: note.x, y: note.y }}
+      bounds="parent"
+    >
+      <Box
+        width="fit-content"
+        minWidth="250px"
+        minHeight={note.attachment ? "250px" : "auto"}
+        borderRadius="7px"
+        background="white"
+        className="drag"
       >
-        <Box
-          width="fit-content"
-          minWidth="250px"
-          minHeight={note.attachment ? "250px" : "auto"}
-          borderRadius="7px"
-          background="white"
-          className="drag"
-        >
-          <HStack my={2} paddingLeft={2} width="250px">
-            <Box fontWeight="bold" width="100%">
-              {note.header}
-            </Box>
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                aria-label="Options"
-                icon={<SettingsIcon className="hoverAnimation" />}
-                variant="none"
+        <HStack my={2} paddingLeft={2} width="250px">
+          <Box fontWeight="bold" width="100%">
+            {note.header}
+          </Box>
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<SettingsIcon className="hoverAnimation" />}
+              variant="none"
+            />
+            <MenuList zIndex="2">
+              <EditNoteModal
+                note={note}
+                isOpen={isOpen}
+                onClose={onClose}
+                onOpen={onOpen}
+                currentModalState={currentModalState}
+                setCurrentModalState={setCurrentModalState}
+                fetchLists={fetchLists}
               />
-              <MenuList zIndex="2">
-                <EditNoteModal
+              <MenuItem
+                icon={<CloseIcon />}
+                onClick={() => deleteNote(note.noteId, note.attachment)}
+              >
+                Delete Note
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </HStack>
+
+        <Box
+          width="260px"
+          height={note.attachment ? "260px" : "150px"}
+          zIndex="1"
+          position="relative"
+        >
+          {note.attachment ? (
+            <>
+              <Image
+                position="absolute"
+                objectFit="cover"
+                width="100%"
+                height="100%"
+                src={`https://notes-app-upload-tritran.s3.ap-southeast-2.amazonaws.com/private/${note.userId}/${note.attachment}`}
+                alt={note.id}
+              />
+              <Box
+                width="100%"
+                height="100%"
+                zIndex={2}
+                position="absolute"
+                backgroundColor="transparent"
+                onMouseEnter={() => setOnHide(false)}
+                onMouseLeave={() => setOnHide(true)}
+              >
+                <DetailNoteModal
                   note={note}
                   isOpen={isOpen}
                   onClose={onClose}
                   onOpen={onOpen}
+                  onHide={onHide}
+                  setOnHide={setOnHide}
                   currentModalState={currentModalState}
                   setCurrentModalState={setCurrentModalState}
-                  fetchLists={fetchLists}
                 />
-                <MenuItem
-                  icon={<CloseIcon />}
-                  onClick={() => deleteNote(note.noteId, note.attachment)}
-                >
-                  Delete Note
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </HStack>
-
-          <Box
-            width="260px"
-            height={note.attachment ? "260px" : "150px"}
-            zIndex="1"
-            position="relative"
-          >
-            {note.attachment ? (
-              <>
-                <Image
-                  position="absolute"
-                  objectFit="cover"
-                  width="100%"
-                  height="100%"
-                  src={`https://notes-app-upload-tritran.s3.ap-southeast-2.amazonaws.com/private/${note.userId}/${note.attachment}`}
-                  alt={note.id}
-                />
-                <Box
-                  width="100%"
-                  height="100%"
-                  zIndex={2}
-                  position="absolute"
-                  backgroundColor="transparent"
-                  onMouseEnter={() => setOnHide(false)}
-                  onMouseLeave={() => setOnHide(true)}
-                >
-                  <DetailNoteModal
-                    note={note}
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    onOpen={onOpen}
-                    onHide={onHide}
-                    setOnHide={setOnHide}
-                    currentModalState={currentModalState}
-                    setCurrentModalState={setCurrentModalState}
-                  />
-                </Box>
-              </>
-            ) : (
-              <Box height="260px" p={2}>
-                {note.content}
               </Box>
-            )}
-          </Box>
+            </>
+          ) : (
+            <Box height="260px" p={2}>
+              {note.content}
+            </Box>
+          )}
         </Box>
-      </Draggable>
-    </>
+      </Box>
+    </Draggable>
   );
 };
 
