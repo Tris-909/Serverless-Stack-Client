@@ -76,7 +76,7 @@ const CreateNoteModal = ({ isOpen, onOpen, onClose, fetchLists }) => {
 
   return (
     <>
-      <Button position="absolute" right="5" bottom="5" onClick={onOpen}>
+      <Button position="sticky" left="95%" top="92%" onClick={onOpen}>
         <Icon as={SmallAddIcon} boxSize={8} />
       </Button>
       <CommonModal

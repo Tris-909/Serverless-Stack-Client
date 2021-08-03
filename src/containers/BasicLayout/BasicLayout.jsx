@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Box,
   VStack,
   Text,
   Divider,
@@ -16,7 +17,7 @@ const BasicLayout = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <div className="Home">
+    <Box className="Home">
       <NavBar onOpen={onOpen} />
       {props.children}
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
@@ -30,7 +31,7 @@ const BasicLayout = (props) => {
           </VStack>
         </DrawerContent>
       </Drawer>
-    </div>
+    </Box>
   );
 };
 

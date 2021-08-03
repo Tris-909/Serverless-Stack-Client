@@ -119,7 +119,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const data = await Auth.forgotPassword(email);
+      await Auth.forgotPassword(email);
       setIsLoading(false);
       changeFormState("confirmchangepassword", true);
     } catch (error) {
