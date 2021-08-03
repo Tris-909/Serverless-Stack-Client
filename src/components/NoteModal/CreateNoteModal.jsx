@@ -10,12 +10,13 @@ import {
   Textarea,
   ModalFooter,
   Button,
-  Icon,
   Image,
   HStack,
   Box,
+  MenuItem,
 } from "@chakra-ui/react";
-import { SmallAddIcon, CloseIcon } from "@chakra-ui/icons";
+import { BiNote } from "react-icons/bi";
+import { CloseIcon } from "@chakra-ui/icons";
 import config from "config";
 import { API } from "aws-amplify";
 import { uploadToS3 } from "libs/awsLib";
@@ -76,9 +77,10 @@ const CreateNoteModal = ({ isOpen, onOpen, onClose, fetchLists }) => {
 
   return (
     <>
-      <Button position="sticky" left="95%" top="92%" onClick={onOpen}>
-        <Icon as={SmallAddIcon} boxSize={8} />
-      </Button>
+      <MenuItem icon={<BiNote />} onClick={onOpen}>
+        New Note
+      </MenuItem>
+
       <CommonModal
         isOpen={isOpen}
         onClose={onClose}

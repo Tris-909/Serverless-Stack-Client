@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { useDisclosure, Box } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import Note from "components/Note/Note";
 import SideHelp from "components/Note/components/SideHelp";
-import CreateNoteModal from "components/NoteModal/CreateNoteModal";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchListNotes } from "redux/features/notes/note";
 
@@ -21,12 +20,6 @@ const Home = () => {
 
   return (
     <>
-      {/* <CreateNoteModal
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={onClose}
-        fetchLists={fetchLists}
-      /> */}
       {list.data.map((singleTodo) => {
         return (
           <Note
@@ -36,7 +29,12 @@ const Home = () => {
           />
         );
       })}
-      <SideHelp />
+      <SideHelp
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+        fetchLists={fetchLists}
+      />
     </>
   );
 };

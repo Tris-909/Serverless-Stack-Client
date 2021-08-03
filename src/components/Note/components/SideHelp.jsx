@@ -6,10 +6,11 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
-import { BiUpArrow, BiNote, BiWindow } from "react-icons/bi";
+import { BiUpArrow, BiWindow } from "react-icons/bi";
+import CreateNoteModal from "components/NoteModal/CreateNoteModal";
 import "./SideHelp.scss";
 
-const SideHelp = () => {
+const SideHelp = ({ isOpen, onOpen, onClose, fetchLists }) => {
   return (
     <Menu>
       <MenuButton
@@ -24,7 +25,12 @@ const SideHelp = () => {
       />
 
       <MenuList>
-        <MenuItem icon={<BiNote />}>New Note</MenuItem>
+        <CreateNoteModal
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+          fetchLists={fetchLists}
+        />
         <MenuItem icon={<BiWindow />}>Expand Board</MenuItem>
       </MenuList>
     </Menu>
