@@ -17,9 +17,9 @@ const BasicLayout = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box className="Home">
+    <Box className="Home" display="flex" flexDirection="column">
       <NavBar onOpen={onOpen} />
-      {props.children}
+      <Box flexGrow="1">{props.children}</Box>
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>

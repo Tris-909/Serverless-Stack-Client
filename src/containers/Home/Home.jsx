@@ -29,6 +29,7 @@ const Home = () => {
           />
         );
       })}
+
       <SideHelp
         isOpen={isOpen}
         onOpen={onOpen}
